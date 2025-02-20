@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 249, 250, 251;
+  --background-end-rgb: 249, 250, 251;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-start-rgb));
+}
+
+.active-nav-item {
+  @apply bg-blue-50 text-blue-700;
+}
+
+.nav-item:hover:not(.active-nav-item) {
+  @apply bg-gray-50 text-gray-700;
+}
+
+.top-nav-item {
+  @apply px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600;
+}
+
+.top-nav-item.active {
+  @apply text-blue-600 border-blue-600;
+}
+
+.status-badge {
+  @apply px-3 py-1 text-sm rounded-full;
+}
+
+.status-badge.done {
+  @apply text-green-700 bg-green-50;
+}
+
+.status-badge.pending {
+  @apply text-yellow-700 bg-yellow-50;
+}
+
+.status-badge.failed {
+  @apply text-red-700 bg-red-50;
+}
