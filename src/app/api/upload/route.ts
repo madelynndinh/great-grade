@@ -1,14 +1,12 @@
+import { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { uploadToS3, deleteFromS3 } from '@/lib/s3';
 
-// Disable body parser since we're handling multipart form data
-export const config = {
-  api: {
-    bodyParser: false
-  }
-};
+// New way to configure API route options
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File;
@@ -44,7 +42,7 @@ export async function POST(request: Request) {
   }
 }
 
-export async function DELETE(request: Request) {
+export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const fileName = searchParams.get('fileName');

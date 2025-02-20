@@ -1,7 +1,12 @@
+import { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getSignedDownloadUrl } from '@/lib/s3';
 
-export async function GET(request: Request) {
+// Configure the route as dynamic
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
+export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const fileName = searchParams.get('fileName');

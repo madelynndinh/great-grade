@@ -27,7 +27,7 @@ export default function ResumeUpload() {
 
   useEffect(() => {
     // Load files from localStorage and filter by project
-    const savedFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]');
+    const savedFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]') as FileItem[];
     const projectFiles = projectId 
       ? savedFiles.filter((file: FileItem) => file.projectId === projectId)
       : savedFiles;
@@ -64,11 +64,11 @@ export default function ResumeUpload() {
       };
 
       // Get all files and add the new one
-      const allFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]');
+      const allFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]') as FileItem[];
       const updatedFiles = [newFile, ...allFiles];
       
       // Update state with project-specific files
-      const projectFiles = updatedFiles.filter(f => f.projectId === projectId);
+      const projectFiles = updatedFiles.filter((f: FileItem) => f.projectId === projectId);
       setFiles(projectFiles);
       
       // Save all files to localStorage
@@ -87,13 +87,13 @@ export default function ResumeUpload() {
       const data = await response.json();
 
       // Update file status to Done
-      const finalAllFiles = updatedFiles.map(f => 
+      const finalAllFiles: FileItem[] = updatedFiles.map((f: FileItem): FileItem => 
         f.name === file.name && f.projectId === projectId 
-          ? { ...f, status: 'Done' } 
+          ? { ...f, status: 'Done' as const } 
           : f
       );
       
-      const finalProjectFiles = finalAllFiles.filter(f => f.projectId === projectId);
+      const finalProjectFiles = finalAllFiles.filter((f: FileItem) => f.projectId === projectId);
       setFiles(finalProjectFiles);
       localStorage.setItem('uploadedFiles', JSON.stringify(finalAllFiles));
 
@@ -120,13 +120,13 @@ export default function ResumeUpload() {
     } catch (error) {
       console.error('Upload error:', error);
       // Update file status to Failed
-      const allFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]');
-      const failedFiles = allFiles.map(f => 
+      const allFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]') as FileItem[];
+      const failedFiles: FileItem[] = allFiles.map((f: FileItem): FileItem => 
         f.name === file.name && f.projectId === projectId 
-          ? { ...f, status: 'Failed' } 
+          ? { ...f, status: 'Failed' as const } 
           : f
       );
-      const projectFailedFiles = failedFiles.filter(f => f.projectId === projectId);
+      const projectFailedFiles = failedFiles.filter((f: FileItem) => f.projectId === projectId);
       setFiles(projectFailedFiles);
       localStorage.setItem('uploadedFiles', JSON.stringify(failedFiles));
       alert(error instanceof Error ? error.message : 'Upload failed');
@@ -184,9 +184,9 @@ export default function ResumeUpload() {
       }
 
       // Remove file from localStorage
-      const allFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]');
-      const updatedFiles = allFiles.filter(f => !(f.name === fileName && f.projectId === projectId));
-      const projectFiles = updatedFiles.filter(f => f.projectId === projectId);
+      const allFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]') as FileItem[];
+      const updatedFiles = allFiles.filter((f: FileItem) => !(f.name === fileName && f.projectId === projectId));
+      const projectFiles = updatedFiles.filter((f: FileItem) => f.projectId === projectId);
       
       setFiles(projectFiles);
       localStorage.setItem('uploadedFiles', JSON.stringify(updatedFiles));
